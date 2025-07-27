@@ -1,0 +1,95 @@
+import React from 'react';
+import {
+  Box,
+  Container,
+  Card,
+  CardContent,
+  Typography,
+} from '@mui/material';
+import Header from '@/components/Header';
+import WelcomeSection from '@/components/WelcomeSection';
+import PortfolioInput from '@/components/PortfolioInput/PortfolioInput';
+
+const DashboardPage: React.FC = () => {
+  return (
+    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
+      <Header />
+      
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <WelcomeSection />
+        
+        <PortfolioInput />
+
+        {/* Portfolio Input Section */}
+        <Card sx={{ mb: 4 }}>
+          <CardContent sx={{ p: 4 }}>
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: '1.5rem',
+                fontWeight: 600,
+                mb: 2,
+              }}
+            >
+              Portfolio Input
+            </Typography>
+            <Typography variant="body1" sx={{ color: '#34495e', mb: 3 }}>
+              Add your Nigerian stocks manually or upload a CSV file
+            </Typography>
+
+            {/* Placeholder for portfolio input components */}
+            <Box
+              sx={{
+                p: 4,
+                border: '2px dashed #e0e0e0',
+                borderRadius: 2,
+                textAlign: 'center',
+                backgroundColor: '#fafafa',
+              }}
+            >
+              <Typography variant="body1" sx={{ color: '#666' }}>
+                Portfolio input components will be implemented here
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
+
+        {/* AI Recommendations Section */}
+        <Card>
+          <CardContent sx={{ p: 4 }}>
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: '1.5rem',
+                fontWeight: 600,
+                mb: 2,
+              }}
+            >
+              AI Recommendations
+            </Typography>
+            <Typography variant="body1" sx={{ color: '#34495e', mb: 3 }}>
+              Smart analysis of your Nigerian stock portfolio
+            </Typography>
+
+            {/* Placeholder for recommendations table */}
+            <Box
+              sx={{
+                p: 4,
+                border: '2px dashed #e0e0e0',
+                borderRadius: 2,
+                textAlign: 'center',
+                backgroundColor: '#fafafa',
+              }}
+            >
+              <Typography variant="body1" sx={{ color: '#666' }}>
+                MUI DataGrid recommendations table will be implemented here
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
+      </Container>
+    </Box>
+  );
+};
+
+export default DashboardPage;

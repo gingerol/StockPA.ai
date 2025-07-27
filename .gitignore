@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production builds
+/build
+/dist
+/.next
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database
+*.db
+*.sqlite
+postgres_data/
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Docker
+.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Temp files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Screenshots and test files
+*.png
+test_*.js
+analyze_*.js
+TEMP_*.env
+*_test_*.png
+
+# AI Models (too large for git)
+models/
+*.bin
+*.safetensors

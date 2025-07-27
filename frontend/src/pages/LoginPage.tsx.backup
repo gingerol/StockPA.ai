@@ -1,0 +1,131 @@
+import React from 'react';
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+} from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
+import { useAuthStore } from '@/stores/authStore';
+
+const LoginPage: React.FC = () => {
+  const { login } = useAuthStore();
+
+  const handleGoogleLogin = () => {
+    // TODO: Implement Google OAuth
+    // For now, set a mock user to test the dashboard
+    const mockUser = {
+      id: '1',
+      email: 'eugene@example.com',
+      name: 'Eugene Okello',
+      avatar: '',
+      riskTolerance: 'moderate' as const,
+      createdAt: new Date(),
+      lastLogin: new Date(),
+    };
+    
+    const mockTokens = {
+      accessToken: 'mock-access-token',
+      refreshToken: 'mock-refresh-token',
+      expiresIn: 3600,
+    };
+    
+    // Use the auth store to log in
+    login(mockUser, mockTokens);
+  };
+
+  return (
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ffffff',
+      }}
+    >
+      <Container maxWidth="sm">
+        <Box textAlign="center" mb={4}>
+          <Typography
+            variant="h1"
+            component="h1"
+            sx={{
+              fontSize: '2.5rem',
+              fontWeight: 600,
+              color: '#2c3e50',
+              mb: 2,
+            }}
+          >
+            StockPA.ai
+          </Typography>
+          <Typography
+            variant="h2"
+            component="h2"
+            sx={{
+              fontSize: '1.25rem',
+              fontWeight: 400,
+              color: '#34495e',
+              mb: 4,
+            }}
+          >
+            Your AI Personal Assistant for Smarter Investing
+          </Typography>
+        </Box>
+
+        <Card
+          sx={{
+            maxWidth: 400,
+            mx: 'auto',
+            boxShadow: '0 2px 12px rgba(0, 0, 0, 0.08)',
+            border: '1px solid #f0f0f0',
+          }}
+        >
+          <CardContent sx={{ p: 4 }}>
+            <Typography
+              variant="h3"
+              component="h3"
+              sx={{
+                fontSize: '1.5rem',
+                fontWeight: 600,
+                textAlign: 'center',
+                mb: 3,
+              }}
+            >
+              Welcome to StockPA.ai
+            </Typography>
+            
+            <Typography
+              variant="body1"
+              sx={{
+                textAlign: 'center',
+                mb: 3,
+                color: '#34495e',
+              }}
+            >
+              Get personalized Buy/Hold/Sell recommendations for your Nigerian stock portfolio
+            </Typography>
+
+            <Button
+              variant="contained"
+              fullWidth
+              size="large"
+              startIcon={<GoogleIcon />}
+              onClick={handleGoogleLogin}
+              sx={{
+                py: 1.5,
+                textTransform: 'none',
+                fontWeight: 500,
+              }}
+            >
+              Sign in with Google
+            </Button>
+          </CardContent>
+        </Card>
+      </Container>
+    </Box>
+  );
+};
+
+export default LoginPage;

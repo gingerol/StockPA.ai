@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_URL=postgresql://stockpa:stockpa123@db:5432/stockpa_db
+      - REDIS_URL=redis://redis:6379
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - OLLAMA_URL=http://ai-engine:11434
+      - JWT_SECRET=${JWT_SECRET:-stockpa-jwt-secret-key-2024-production-ready}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-stockpa-refresh-secret-key-2024-production-ready}
+      - FRONTEND_URL=http://localhost:8002
+    depends_on:
+      - db
+      - redis
+      - ai-engine
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8002:8002"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8001
+      - REACT_APP_GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    working_dir: /app
+
+  db:
+    image: postgres:15
+    ports:
+      - "8003:5432"
+    environment:
+      - POSTGRES_DB=stockpa_db
+      - POSTGRES_USER=stockpa
+      - POSTGRES_PASSWORD=stockpa123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "8004:6379"
+    volumes:
+      - redis_data:/data
+
+  ai-engine:
+    build: ./ai-engine
+    ports:
+      - "8005:11434"
+    volumes:
+      - ./ai-engine:/app
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+
+volumes:
+  postgres_data:
+  redis_data:
+  ollama_data:
