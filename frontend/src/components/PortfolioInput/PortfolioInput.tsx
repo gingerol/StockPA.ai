@@ -40,6 +40,25 @@ const PortfolioInput: React.FC<PortfolioInputProps> = ({
   
   const { user } = useAuthStore();
 
+  // Check if user has saved portfolio data
+  const hasSavedPortfolio = user?.id ? localStorage.getItem(`stockpa-portfolio-${user.id}`) !== null : false;
+
+  const restorePreviousPortfolio = () => {
+    if (user?.id) {
+      const savedData = localStorage.getItem(`stockpa-portfolio-${user.id}`);
+      if (savedData) {
+        try {
+          const parsedStocks = JSON.parse(savedData);
+          setStocks(parsedStocks);
+          setPortfolioSaved(true);
+          setSuccess(`Restored ${parsedStocks.length} stocks from previous session`);
+        } catch (error) {
+          setError('Failed to restore previous portfolio');
+        }
+      }
+    }
+  };
+
   const handleFileSelect = (file: File) => {
     console.log('File selected:', file.name);
   };
@@ -92,6 +111,12 @@ const PortfolioInput: React.FC<PortfolioInputProps> = ({
         setCurrentPortfolioId(response.data.portfolioId);
         setPortfolioSaved(true);
         setSuccess(`Portfolio saved! ${stocksToSave.length} stocks ready for analysis.`);
+        
+        // Save to localStorage for persistence (user-specific)
+        if (user?.id) {
+          localStorage.setItem(`stockpa-portfolio-${user.id}`, JSON.stringify(stocksToSave));
+        }
+        
         console.log('✅ Portfolio saved:', response.data);
       } else {
         setError('Failed to save portfolio');
@@ -188,6 +213,19 @@ const PortfolioInput: React.FC<PortfolioInputProps> = ({
           onFileSelect={handleFileSelect} 
           onFileUpload={handleFileUpload}
         />
+        
+        {/* Show restore button if user has saved portfolio data */}
+        {hasSavedPortfolio && stocks.length === 0 && (
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <Button
+              variant="outlined"
+              onClick={restorePreviousPortfolio}
+              sx={{ textTransform: 'none' }}
+            >
+              📋 Restore Previous Portfolio
+            </Button>
+          </Box>
+        )}
       </Box>
 
       <Divider sx={{ my: 3 }}>

@@ -8,7 +8,6 @@ import Header from '@/components/Header';
 import WelcomeSection from '@/components/WelcomeSection';
 import PortfolioInput from '@/components/PortfolioInput/PortfolioInput';
 import Recommendations from '@/components/Recommendations/Recommendations';
-import PortfolioHistoryWidget from '@/components/Dashboard/PortfolioHistoryWidget';
 import { useAuthStore } from '@/stores/authStore';
 import { useEngagementTracking } from '@/hooks/useEngagementTracking';
 
@@ -52,30 +51,18 @@ const DashboardPage: React.FC = () => {
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <WelcomeSection />
         
-        <Grid container spacing={3}>
-          {/* Main Portfolio Input */}
-          <Grid item xs={12} lg={8}>
-            <PortfolioInput 
-              onGetRecommendations={handleGetRecommendations}
-              onAnalysisComplete={handleAnalysisComplete}
-            />
+        <PortfolioInput 
+          onGetRecommendations={handleGetRecommendations}
+          onAnalysisComplete={handleAnalysisComplete}
+        />
 
-            {/* Show recommendations/analysis results */}
-            {(showRecommendations || analysisResults) && (
-              <Recommendations
-                data={analysisResults || portfolioStocks}
-                isLoading={isLoadingRecommendations}
-              />
-            )}
-          </Grid>
-
-          {/* Portfolio History Sidebar - Only show for logged in users */}
-          {user && (
-            <Grid item xs={12} lg={4}>
-              <PortfolioHistoryWidget />
-            </Grid>
-          )}
-        </Grid>
+        {/* Show recommendations/analysis results */}
+        {(showRecommendations || analysisResults) && (
+          <Recommendations
+            data={analysisResults || portfolioStocks}
+            isLoading={isLoadingRecommendations}
+          />
+        )}
       </Container>
     </Box>
   );

@@ -14,7 +14,7 @@ export const useEngagementTracking = () => {
     if (!user) return;
 
     try {
-      await api.post('/api/valuation/track', {
+      await api.post('/valuation/track', {
         action: event.action,
         metadata: {
           ...event.metadata,
@@ -60,7 +60,7 @@ export const useEngagementTracking = () => {
         },
       });
 
-      navigator.sendBeacon('/api/valuation/track', data);
+      navigator.sendBeacon('http://localhost:8001/api/valuation/track', data);
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
