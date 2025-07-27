@@ -7,25 +7,17 @@ export interface User {
   avatar?: string;
   riskTolerance: 'conservative' | 'moderate' | 'aggressive';
   
-  // Trial and subscription status
-  status: 'TRIAL' | 'FREE' | 'PRO_MONTHLY' | 'PRO_ANNUAL' | 'EXPIRED';
+  // User status (all users have full access)
+  status: 'ACTIVE' | 'INACTIVE';
   
-  // Trial tracking
-  trialStartDate: Date;
-  trialEndDate: Date;
-  totalTrialDays: number;
-  hasUsedTrial: boolean;
+  // Usage tracking
+  totalAnalyses: number;
+  portfoliosCreated: number;
   
-  // Extension tracking
-  requestExtensionUsed: boolean;
-  referralExtensions: number;
-  extensionsUsed: number;
-  
-  // Referral system
+  // Referral system (for community growth)
   referralCode: string;
   referredBy?: string;
   referralCount: number;
-  freeMonthsEarned: number;
   
   // Timestamps
   createdAt: Date;

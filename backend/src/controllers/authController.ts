@@ -29,8 +29,6 @@ export const initializeGoogleAuth = () => {
 
     // Create new user
     const now = new Date();
-    const trialEndDate = new Date(now);
-    trialEndDate.setDate(trialEndDate.getDate() + 7); // 7-day trial
 
     user = await prisma.user.create({
       data: {
@@ -40,10 +38,6 @@ export const initializeGoogleAuth = () => {
         avatar: profile.photos?.[0]?.value || '',
         referralCode: nanoid(8).toUpperCase(),
         status: 'ACTIVE',
-        trialStartDate: now,
-        trialEndDate: trialEndDate,
-        totalTrialDays: 7,
-        hasUsedTrial: true,
         lastLogin: now,
         createdAt: now,
       }

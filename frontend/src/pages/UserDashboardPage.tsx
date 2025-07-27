@@ -18,12 +18,10 @@ import {
   TrendingUp,
 } from '@mui/icons-material';
 import Header from '@/components/Header';
-import TrialStatus from '@/components/Trial/TrialStatus';
 import PerformanceWidget from '@/components/Dashboard/PerformanceWidget';
 import PeerComparisonWidget from '@/components/Dashboard/PeerComparisonWidget';
 import PortfolioHealthWidget from '@/components/Dashboard/PortfolioHealthWidget';
 import AdvancedPerformanceCharts from '@/components/Dashboard/AdvancedPerformanceCharts';
-import UpgradeModal from '@/components/Trial/UpgradeModal';
 import { useAuthStore } from '@/stores/authStore';
 
 interface TabPanelProps {
@@ -53,9 +51,8 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const UserDashboardPage: React.FC = () => {
-  const { user, requestTrialExtension } = useAuthStore();
+  const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState(0);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [activePortfolioId, setActivePortfolioId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -87,29 +84,11 @@ const UserDashboardPage: React.FC = () => {
     setActiveTab(newValue);
   };
 
-  const handleRequestExtension = async () => {
-    const success = await requestTrialExtension();
-    if (success) {
-      console.log('Trial extended successfully!');
-    }
-  };
-
-  const handleUpgrade = () => {
-    setShowUpgradeModal(true);
-  };
-
-  const handleSubscribe = (plan: 'monthly' | 'annual' | 'daily') => {
-    console.log('Subscribing to:', plan);
-    setShowUpgradeModal(false);
-  };
-
   if (!user) {
     return null;
   }
 
   const hasActivePortfolio = activePortfolioId !== null;
-  const isProUser = ['PRO_MONTHLY', 'PRO_ANNUAL'].includes(user.status);
-  const isTrialActive = user.status === 'TRIAL' && new Date(user.trialEndDate) > new Date();
 
   return (
     <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
@@ -126,12 +105,6 @@ const UserDashboardPage: React.FC = () => {
           </Typography>
         </Box>
 
-        {/* Trial Status */}
-        <TrialStatus
-          user={user}
-          onRequestExtension={handleRequestExtension}
-          onUpgrade={handleUpgrade}
-        />
 
         {/* Portfolio Required Alert */}
         {!hasActivePortfolio && (
@@ -290,34 +263,7 @@ const UserDashboardPage: React.FC = () => {
           </TabPanel>
         </Card>
 
-        {/* Upgrade Prompt for Free Users */}
-        {!isProUser && !isTrialActive && (
-          <Card sx={{ bgcolor: 'warning.50', border: '1px solid', borderColor: 'warning.200' }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                🚀 Unlock Full Analytics Power
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Upgrade to StockPA Pro to access real-time updates, detailed charts, export features, and priority support.
-              </Typography>
-              <Button
-                variant="contained"
-                onClick={handleUpgrade}
-                sx={{ bgcolor: 'warning.main', '&:hover': { bgcolor: 'warning.dark' } }}
-              >
-                Upgrade to Pro
-              </Button>
-            </CardContent>
-          </Card>
-        )}
       </Container>
-
-      <UpgradeModal
-        open={showUpgradeModal}
-        onClose={() => setShowUpgradeModal(false)}
-        onSubscribe={handleSubscribe}
-        currentLimitations={user.status === 'FREE' ? ['Real-time updates', 'Detailed charts', 'Export features'] : []}
-      />
     </Box>
   );
 };

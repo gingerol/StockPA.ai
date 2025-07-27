@@ -176,7 +176,7 @@ const LoginPage: React.FC = () => {
                     color: '#6c757d',
                   }}
                 >
-                  100% Free Forever • No Hidden Fees
+                  Start Your Investment Journey
                 </Typography>
               </CardContent>
             </Card>
@@ -277,7 +277,7 @@ const LoginPage: React.FC = () => {
               <Box sx={{ textAlign: 'center' }}>
                 <Analytics sx={{ fontSize: 48, color: '#3498db', mb: 1 }} />
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                  Professional Grade
+                  Investment Intelligence
                 </Typography>
                 <Typography variant="body2" sx={{ color: '#6c757d' }}>
                   Institutional-quality analysis accessible to individual investors
@@ -326,7 +326,7 @@ const LoginPage: React.FC = () => {
             <Chip label="NGX Specialists" variant="outlined" />
             <Chip label="Real-time Analysis" variant="outlined" />
             <Chip label="Secure & Private" variant="outlined" />
-            <Chip label="Professional Insights" variant="outlined" />
+            <Chip label="Smart Insights" variant="outlined" />
           </Box>
         </Box>
       </Container>

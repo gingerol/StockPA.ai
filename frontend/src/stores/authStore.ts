@@ -14,10 +14,8 @@ interface AuthState {
   updateUser: (updates: Partial<User>) => void;
   setLoading: (loading: boolean) => void;
   
-  // Trial and extension actions
-  requestTrialExtension: () => Promise<boolean>;
-  processReferralExtension: (referralCode: string) => Promise<boolean>;
-  checkTrialStatus: () => { isExpired: boolean; daysRemaining: number };
+  // User actions
+  updateUserStats: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -59,81 +57,17 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: loading });
       },
 
-      requestTrialExtension: async () => {
+      updateUserStats: async () => {
         const user = get().user;
-        if (!user || user.requestExtensionUsed || user.totalTrialDays >= 28) {
-          return false;
-        }
+        if (!user) return;
 
         try {
-          // TODO: API call to extend trial
-          // const response = await api.requestTrialExtension(user.id);
-          
-          // Mock implementation for now
-          const newTrialEndDate = new Date(user.trialEndDate);
-          newTrialEndDate.setDate(newTrialEndDate.getDate() + 7);
-          
-          const updatedUser = {
-            ...user,
-            trialEndDate: newTrialEndDate,
-            totalTrialDays: user.totalTrialDays + 7,
-            requestExtensionUsed: true,
-            extensionsUsed: user.extensionsUsed + 1,
-          };
-          
-          set({ user: updatedUser });
-          return true;
+          // Update user statistics
+          // This can track usage for analytics without restricting features
+          console.log('Updating user stats...');
         } catch (error) {
-          console.error('Failed to extend trial:', error);
-          return false;
+          console.error('Failed to update user stats:', error);
         }
-      },
-
-      processReferralExtension: async (referralCode: string) => {
-        const user = get().user;
-        if (!user || user.totalTrialDays >= 28) {
-          return false;
-        }
-
-        try {
-          // TODO: API call to process referral extension
-          // const response = await api.processReferralExtension(user.id, referralCode);
-          
-          // Mock implementation for now
-          const newTrialEndDate = new Date(user.trialEndDate);
-          newTrialEndDate.setDate(newTrialEndDate.getDate() + 7);
-          
-          const updatedUser = {
-            ...user,
-            trialEndDate: newTrialEndDate,
-            totalTrialDays: user.totalTrialDays + 7,
-            referralExtensions: user.referralExtensions + 1,
-            extensionsUsed: user.extensionsUsed + 1,
-          };
-          
-          set({ user: updatedUser });
-          return true;
-        } catch (error) {
-          console.error('Failed to process referral extension:', error);
-          return false;
-        }
-      },
-
-      checkTrialStatus: () => {
-        const user = get().user;
-        if (!user) {
-          return { isExpired: true, daysRemaining: 0 };
-        }
-
-        const now = new Date();
-        const trialEnd = new Date(user.trialEndDate);
-        const diffTime = trialEnd.getTime() - now.getTime();
-        const daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
-        return {
-          isExpired: daysRemaining <= 0,
-          daysRemaining: Math.max(0, daysRemaining),
-        };
       },
     }),
     {
